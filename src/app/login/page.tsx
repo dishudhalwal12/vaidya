@@ -225,7 +225,7 @@ export default function LoginPage() {
               {!googleUserForOnboarding && (<>Or{' '}
               <button
                 onClick={() => setFormType(formType === 'login' ? 'signup' : 'login')}
-                className="font-medium text-primary hover:text-primary/90"
+                className="font-medium text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md"
                 disabled={isLoading || isGoogleLoading}
               >
                 {formType === 'login' ? 'create an account' : 'sign in to your account'}

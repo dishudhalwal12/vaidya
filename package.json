@@ -10,10 +10,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "predeploy": "npm run build && next export",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d out"
   },
-  "homepage": "https://dishudhalwal12.github.io/vaidya",
   "dependencies": {
     "@genkit-ai/google-genai": "latest",
     "@google/generative-ai": "^0.18.0",

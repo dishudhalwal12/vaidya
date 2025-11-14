@@ -1,0 +1,106 @@
+/**
+ * @fileoverview Firestore Security Rules for Vaidya.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a multi-role security model within organizations.
+ * - Users own their profiles.
+ * - Admins can manage their organization and invites.
+ * - All members of an organization can read shared data like tasks.
+ * - Access is denied by default unless explicitly granted.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // =================================
+    // Helper Functions
+    // =================================
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function getUserRole() {
+      return getUserData().role;
+    }
+
+    function getUserOrgId() {
+      return getUserData().orgId;
+    }
+    
+    function isOrgMember(orgId) {
+      return isSignedIn() && getUserOrgId() == orgId;
+    }
+
+    function isOrgAdmin(orgId) {
+      return isOrgMember(orgId) && getUserRole() == 'admin';
+    }
+
+    // =================================
+    // Collection Rules
+    // =================================
+
+    match /users/{userId} {
+      // A user can create their own document.
+      // Anyone can read/update their own document.
+      allow create: if isOwner(userId);
+      allow read, update, delete: if isOwner(userId);
+      // Disallow listing all users for security.
+      allow list: if false; 
+    }
+
+    match /orgs/{orgId} {
+      // Any signed-in user can create an organization, BUT only if they set themselves as the owner.
+      // This is crucial for the non-blocking onboarding flow.
+      allow create: if isSignedIn() && request.resource.data.ownerId == request.auth.uid;
+      // Only members of the organization can read its details.
+      allow read: if isOrgMember(orgId);
+      // Only admins of the organization can update or delete it.
+      allow update, delete: if isOrgAdmin(orgId);
+    }
+
+    match /invites/{inviteId} {
+      // Admins can create and read their organization's invites.
+      allow create, read: if isOrgAdmin(request.resource.data.orgId);
+      allow list: if isSignedIn() && getUserRole() == 'admin';
+
+      // Any signed-in user can update an invite, but ONLY to increment the usesCount.
+      // This is necessary for the invite redemption process.
+      allow update: if isSignedIn()
+                    && request.resource.data.usesCount == resource.data.usesCount + 1
+                    && request.resource.data.orgId == resource.data.orgId
+                    && request.resource.data.roleAllowed == resource.data.roleAllowed
+                    && request.resource.data.code == resource.data.code;
+
+      // No client-side deletes.
+      allow delete: if false;
+    }
+
+    match /tasks/{taskId} {
+      // Tasks can be read by any member of the organization.
+      allow read: if isOrgMember(resource.data.orgId);
+      // A user can list tasks if their client-side query is correctly filtered by their orgId.
+      allow list: if isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+      // Writes are allowed if the user is part of the organization.
+      allow write: if isOrgMember(request.resource.data.orgId);
+    }
+
+    match /patients/{patientId} {
+      // A user can read a specific patient if they are a member of that patient's org.
+      allow read: if isOrgMember(resource.data.orgId);
+      // A user can list patients if their client-side query is correctly filtered by their orgId.
+      // This rule ensures the user belongs to an org before attempting to list patients.
+      allow list: if isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+      // Writes are allowed if the user is part of the org and the data's orgId matches.
+      allow write: if isOrgMember(request.resource.data.orgId);
+    }
+  }
+}

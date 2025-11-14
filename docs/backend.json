@@ -1,0 +1,391 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the CliniSight application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity. Matches Firebase Auth UID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the user."
+        },
+        "role": {
+          "type": "string",
+          "description": "Role of the user within the organization.",
+          "enum": ["doctor", "admin", "staff"]
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Reference to Organization. (Relationship: Organization 1:N User)."
+        },
+        "orgType": {
+            "type": "string",
+            "description": "The type of organization the user belongs to.",
+            "enum": ["private", "hospital"]
+        },
+        "invitedBy": {
+          "type": "string",
+          "description": "Reference to the User who invited this user. (Relationship: User 1:N User)"
+        },
+        "specialization": {
+          "type": "string",
+          "description": "The user's specialization, if applicable."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "URL of the user's profile photo."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "phone",
+        "role",
+        "orgId",
+        "orgType",
+        "createdAt"
+      ]
+    },
+    "Organization": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Organization",
+      "type": "object",
+      "description": "Represents a clinic or hospital within the CliniSight application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Organization entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the clinic or hospital."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the clinic or hospital."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of organization.",
+          "enum": ["private", "hospital"]
+        },
+        "ownerId": {
+          "type": "string",
+          "description": "Reference to User representing the owner/admin of the organization. (Relationship: User 1:N Organization)"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the organization.",
+          "enum": ["active", "pending_verification"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the organization was created.",
+          "format": "date-time"
+        },
+        "metadata": {
+          "type": "string",
+          "description": "Additional metadata about the organization (e.g., size, specialties)."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "address",
+        "type",
+        "ownerId",
+        "status",
+        "createdAt"
+      ]
+    },
+    "Invite": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Invite",
+      "type": "object",
+      "description": "Represents an invitation for a user to join an organization.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Invite entity."
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Reference to Organization that the invite is for. (Relationship: Organization 1:N Invite)"
+        },
+        "code": {
+          "type": "string",
+          "description": "The invite code that users will enter."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Reference to User who created the invite. (Relationship: User 1:N Invite)"
+        },
+        "roleAllowed": {
+          "type": "string",
+          "description": "The role the user will have upon joining.",
+          "enum": ["doctor", "staff"]
+        },
+        "expiresAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the invite expires.",
+          "format": "date-time"
+        },
+        "maxUses": {
+          "type": "number",
+          "description": "The maximum number of times the invite can be used."
+        },
+        "usesCount": {
+          "type": "number",
+          "description": "The number of times the invite has been used."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the invite was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "orgId",
+        "code",
+        "createdBy",
+        "roleAllowed",
+        "expiresAt",
+        "maxUses",
+        "usesCount",
+        "createdAt"
+      ]
+    },
+    "Task": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Task",
+      "type": "object",
+      "description": "Represents a task assigned within an organization.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "assignedBy": {
+          "type": "string"
+        },
+        "assignedTo": {
+          "type": "string"
+        },
+        "patientName": {
+          "type": "string"
+        },
+        "testType": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "completed"]
+        },
+        "createdAt": {
+            "type": "string",
+            "format": "date-time"
+        }
+      },
+      "required": ["id", "orgId", "assignedBy", "assignedTo", "status", "createdAt"]
+    },
+    "Patient": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Patient",
+      "type": "object",
+      "description": "Represents a patient within an organization.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string",
+          "format": "date"
+        },
+        "gender": {
+          "type": "string",
+          "enum": ["Male", "Female", "Other"]
+        },
+        "address": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Active", "Inactive", "New"]
+        },
+        "avatarId": {
+            "type": "string"
+        },
+        "lastVisit": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "visitType": {
+          "type": "string",
+          "description": "The type of visit.",
+          "enum": ["OPD", "Emergency"]
+        },
+        "consultationFee": {
+          "type": "number",
+          "description": "The fee charged for the consultation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "orgId", "name", "email", "phone", "dob", "status", "createdAt", "visitType", "consultationFee"]
+    },
+    "Medication": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Medication",
+      "type": "object",
+      "description": "Represents a medication schedule for a patient.",
+      "properties": {
+        "id": { "type": "string" },
+        "patientId": { "type": "string" },
+        "orgId": { "type": "string" },
+        "name": { "type": "string" },
+        "dose": { "type": "string" },
+        "times": { "type": "array", "items": { "type": "string", "format": "time" } },
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "patientId", "orgId", "name", "dose", "times", "startDate", "createdAt"]
+    },
+    "AdherenceLog": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AdherenceLog",
+      "type": "object",
+      "description": "Logs an event related to medication adherence.",
+      "properties": {
+        "id": { "type": "string" },
+        "medicationId": { "type": "string" },
+        "patientId": { "type": "string" },
+        "orgId": { "type": "string" },
+        "status": { "type": "string", "enum": ["taken", "missed", "snoozed"] },
+        "loggedAt": { "type": "string", "format": "date-time" },
+        "scheduledTime": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "medicationId", "patientId", "status", "loggedAt", "scheduledTime"]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "google.com"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profiles. Uses path-based ownership. The `userId` corresponds to the Firebase Auth UID."
+        }
+      },
+      {
+        "path": "/orgs/{orgId}",
+        "definition": {
+          "entityName": "Organization",
+          "schema": {
+            "$ref": "#/backend/entities/Organization"
+          },
+          "description": "Stores organization profiles. The `ownerId` field represents the admin of the organization."
+        }
+      },
+      {
+        "path": "/invites/{inviteId}",
+        "definition": {
+          "entityName": "Invite",
+          "schema": {
+            "$ref": "#/backend/entities/Invite"
+          },
+          "description": "Stores invite codes for joining organizations. Managed via Cloud Functions."
+        }
+      },
+      {
+        "path": "/tasks/{taskId}",
+        "definition": {
+            "entityName": "Task",
+            "schema": {
+                "$ref": "#/backend/entities/Task"
+            },
+            "description": "Stores tasks assigned to staff members within an organization."
+        }
+      },
+      {
+        "path": "/patients/{patientId}",
+        "definition": {
+            "entityName": "Patient",
+            "schema": {
+                "$ref": "#/backend/entities/Patient"
+            },
+            "description": "Stores patient profiles for a specific organization."
+        }
+      },
+      {
+        "path": "/medications/{medicationId}",
+        "definition": {
+            "entityName": "Medication",
+            "schema": {
+                "$ref": "#/backend/entities/Medication"
+            },
+            "description": "Stores medication schedules for patients."
+        }
+      },
+      {
+        "path": "/adherence-logs/{logId}",
+        "definition": {
+            "entityName": "AdherenceLog",
+            "schema": {
+                "$ref": "#/backend/entities/AdherenceLog"
+            },
+            "description": "Logs medication adherence events."
+        }
+      }
+    ]
+  }
+}
+    

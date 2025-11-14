@@ -1,0 +1,40 @@
+{
+  "placeholderImages": [
+    {
+      "id": "user-1",
+      "description": "Avatar for Sarah Johnson",
+      "imageUrl": "https://i.pravatar.cc/150?u=sarahjohnson",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "user-2",
+      "description": "Avatar for Michael Smith",
+      "imageUrl": "https://i.pravatar.cc/150?u=michaelsmith",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "user-3",
+      "description": "Avatar for Emily Davis",
+      "imageUrl": "https://i.pravatar.cc/150?u=emilydavis",
+      "imageHint": "woman face"
+    },
+    {
+      "id": "user-4",
+      "description": "Avatar for David Wilson",
+      "imageUrl": "https://i.pravatar.cc/150?u=davidwilson",
+      "imageHint": "man face"
+    },
+    {
+      "id": "user-5",
+      "description": "Avatar for Jessica Brown",
+      "imageUrl": "https://i.pravatar.cc/150?u=jessicabrown",
+      "imageHint": "woman smiling"
+    },
+    {
+      "id": "user-6",
+      "description": "Avatar for Dr. Evans",
+      "imageUrl": "https://i.pravatar.cc/150?u=drevans",
+      "imageHint": "doctor professional"
+    }
+  ]
+}

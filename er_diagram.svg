@@ -1,0 +1,232 @@
+<svg width="1800" height="2000" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" style="background-color:#f9fafb;">
+
+  <defs>
+    <!-- Arrowhead for connectors -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280" />
+    </marker>
+    <!-- Crow's foot for one-to-many -->
+    <marker id="many" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#6b7280" stroke-width="1"/>
+    </marker>
+    <marker id="one" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M 0 5 L 10 5" fill="none" stroke="#6b7280" stroke-width="1"/>
+        <path d="M 0 0 L 0 10" fill="none" stroke="#6b7280" stroke-width="1" transform="translate(1, 0)"/>
+    </marker>
+  </defs>
+
+  <!-- Main Title -->
+  <text x="900" y="50" font-size="32" font-weight="bold" text-anchor="middle" fill="#111827">Vaidya App - Architecture & Workflow</text>
+  
+  <!-- Section 1: ER Diagram -->
+  <g id="er-diagram">
+    <text x="350" y="120" font-size="24" font-weight="bold" text-anchor="middle" fill="#1f2937">Entity-Relationship (ER) Diagram</text>
+
+    <!-- Entity: Organization -->
+    <rect x="50" y="150" width="220" height="150" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
+    <text x="160" y="175" font-weight="bold" text-anchor="middle">Organization</text>
+    <line x1="60" y1="185" x2="260" y2="185" stroke="#a5b4fc"/>
+    <text x="60" y="205">id (PK)</text>
+    <text x="60" y="225">name</text>
+    <text x="60" y="245">address</text>
+    <text x="60" y="265">type</text>
+    <text x="60" y="285">ownerId (FK)</text>
+
+    <!-- Entity: User -->
+    <rect x="350" y="350" width="220" height="170" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
+    <text x="460" y="375" font-weight="bold" text-anchor="middle">User</text>
+    <line x1="360" y1="385" x2="560" y2="385" stroke="#a5b4fc"/>
+    <text x="360" y="405">id (PK)</text>
+    <text x="360" y="425">name</text>
+    <text x="360" y="445">email</text>
+    <text x="360" y="465">role</text>
+    <text x="360" y="485">orgId (FK)</text>
+    <text x="360" y="505">orgType</text>
+
+    <!-- Entity: Patient -->
+    <rect x="50" y="450" width="220" height="150" rx="8" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+    <text x="160" y="475" font-weight="bold" text-anchor="middle">Patient</text>
+    <line x1="60" y1="485" x2="260" y2="485" stroke="#6ee7b7"/>
+    <text x="60" y="505">id (PK)</text>
+    <text x="60" y="525">orgId (FK)</text>
+    <text x="60" y="545">name</text>
+    <text x="60" y="565">dob</text>
+    <text x="60" y="585">consultationFee</text>
+
+    <!-- Entity: Task -->
+    <rect x="350" y="620" width="220" height="150" rx="8" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+    <text x="460" y="645" font-weight="bold" text-anchor="middle">Task</text>
+    <line x1="360" y1="655" x2="560" y2="655" stroke="#6ee7b7"/>
+    <text x="360" y="675">id (PK)</text>
+    <text x="360" y="695">orgId (FK)</text>
+    <text x="360" y="715">title</text>
+    <text x="360" y="735">assignedTo</text>
+    <text x="360" y="755">status</text>
+
+    <!-- Entity: Invite -->
+    <rect x="50" y="720" width="220" height="150" rx="8" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+    <text x="160" y="745" font-weight="bold" text-anchor="middle">Invite</text>
+    <line x1="60" y1="755" x2="260" y2="755" stroke="#6ee7b7"/>
+    <text x="60" y="775">id (PK)</text>
+    <text x="60" y="795">orgId (FK)</text>
+    <text x="60" y="815">code</text>
+    <text x="60" y="835">createdBy (FK)</text>
+    <text x="60" y="855">roleAllowed</text>
+
+    <!-- Relationships -->
+    <path d="M 270 225 H 310 V 440 H 350" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#many)" marker-start="url(#one)"/>
+    <text x="290" y="325" font-size="12" fill="#4b5563">has</text>
+    <path d="M 270 525 H 310 V 440 H 350" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#many)" marker-start="url(#one)"/>
+    <text x="290" y="500" font-size="12" fill="#4b5563">contains</text>
+    <path d="M 270 795 H 310 V 440 H 350" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#many)" marker-start="url(#one)"/>
+    <text x="290" y="650" font-size="12" fill="#4b5563">generates</text>
+    <path d="M 350 700 H 310 V 440 H 270" transform="translate(290, -200)" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#many)" marker-start="url(#one)"/>
+    <text x="290" y="550" font-size="12" fill="#4b5563">manages</text>
+    <path d="M 570 440 H 610 V 695 H 570" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#many)" marker-start="url(#one)"/>
+    <text x="590" y="550" font-size="12" fill="#4b5563">manages</text>
+  </g>
+
+  <!-- Section 2: User Workflow Diagram -->
+  <g id="workflow-diagram" transform="translate(700, 0)">
+    <text x="450" y="120" font-size="24" font-weight="bold" text-anchor="middle" fill="#1f2937">User Workflow Diagram</text>
+    
+    <!-- Start Node -->
+    <rect x="350" y="150" width="200" height="50" rx="25" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+    <text x="450" y="180" text-anchor="middle">User Visits Login Page</text>
+
+    <!-- Path to Login/Signup Choice -->
+    <line x1="450" y1="200" x2="450" y2="230" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Login/Signup Choice -->
+    <rect x="350" y="230" width="200" height="50" rx="8" fill="#ffedd5" stroke="#fb923c" stroke-width="2"/>
+    <text x="450" y="260" text-anchor="middle">Login or Signup?</text>
+    
+    <!-- Paths from choice -->
+    <line x1="350" y1="255" x2="250" y2="255" stroke="#9ca3af" stroke-width="2" />
+    <text x="280" y="250" font-size="12">Login</text>
+    <line x1="550" y1="255" x2="650" y2="255" stroke="#9ca3af" stroke-width="2" />
+    <text x="580" y="250" font-size="12">Signup</text>
+
+    <!-- Login Path -->
+    <rect x="100" y="230" width="150" height="50" rx="8" fill="#ecfccb" stroke="#84cc16" stroke-width="2"/>
+    <text x="175" y="260" text-anchor="middle">Authenticate</text>
+    <line x1="175" y1="280" x2="175" y2="320" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="100" y="320" width="150" height="50" rx="8" fill="#ecfccb" stroke="#84cc16" stroke-width="2"/>
+    <text x="175" y="350" text-anchor="middle">Check Role</text>
+    <line x1="175" y1="370" x2="175" y2="420" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="215" y="400" font-size="12">Redirect</text>
+
+
+    <!-- Signup Path -->
+    <rect x="650" y="230" width="200" height="50" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+    <text x="750" y="260" text-anchor="middle">Choose Onboarding Path</text>
+    <line x1="750" y1="280" x2="750" y2="320" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Onboarding Options -->
+    <path d="M 550 345 L 750 320 L 950 345" fill="none" stroke="#9ca3af" stroke-width="2"/>
+    <line x1="550" y1="345" x2="550" y2="370" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="475" y="370" width="150" height="60" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+    <text x="550" y="395" text-anchor="middle">Create Clinic</text>
+    <text x="550" y="415" font-size="12" text-anchor="middle">(Doctor Role)</text>
+
+    <line x1="750" y1="320" x2="750" y2="370" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="675" y="370" width="150" height="60" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+    <text x="750" y="395" text-anchor="middle">Create Hospital</text>
+    <text x="750" y="415" font-size="12" text-anchor="middle">(Admin Role)</text>
+    
+    <line x1="950" y1="345" x2="950" y2="370" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="875" y="370" width="150" height="60" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+    <text x="950" y="395" text-anchor="middle">Use Invite Code</text>
+    <text x="950" y="415" font-size="12" text-anchor="middle">(Role from code)</text>
+    
+    <!-- Role-Based Dashboards -->
+    <rect x="25" y="450" width="250" height="60" rx="8" fill="#f5f5f5" stroke="#a3a3a3" stroke-width="2"/>
+    <text x="150" y="485" text-anchor="middle">Doctor Dashboard & Tools</text>
+
+    <rect x="325" y="450" width="250" height="60" rx="8" fill="#f5f5f5" stroke="#a3a3a3" stroke-width="2"/>
+    <text x="450" y="485" text-anchor="middle">Admin Panel</text>
+
+    <rect x="625" y="450" width="250" height="60" rx="8" fill="#f5f5f5" stroke="#a3a3a3" stroke-width="2"/>
+    <text x="750" y="485" text-anchor="middle">Staff Task Board</text>
+
+    <!-- Connectors to Dashboards -->
+    <path d="M 175 420 C 175 430, 150 430, 150 450" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="190" y="435" font-size="12">is Doctor</text>
+    <path d="M 175 420 C 275 430, 350 430, 450 450" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="300" y="435" font-size="12">is Admin</text>
+     <path d="M 175 420 C 400 420, 650 430, 750 450" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="500" y="425" font-size="12">is Staff</text>
+  </g>
+  
+  
+  <!-- Section 3: Feature Flowchart -->
+  <g id="flowchart-diagram" transform="translate(0, 900)">
+    <text x="900" y="120" font-size="24" font-weight="bold" text-anchor="middle" fill="#1f2937">Feature Flowchart: AI Diagnostic Copilot</text>
+    
+    <!-- Process Steps -->
+    <g class="process-step">
+      <rect x="50" y="180" width="220" height="60" rx="8" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+      <text x="160" y="215" text-anchor="middle">1. Upload Health Report</text>
+    </g>
+    <line x1="270" y1="210" x2="330" y2="210" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <g class="process-step">
+      <rect x="330" y="180" width="220" height="60" rx="8" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+      <text x="440" y="215" text-anchor="middle">2. Click "Start AI Diagnosis"</text>
+    </g>
+    <line x1="440" y1="240" x2="440" y2="290" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g class="process-step">
+      <rect x="330" y="290" width="220" height="60" rx="30" fill="#fefce8" stroke="#facc15" stroke-width="2"/>
+      <text x="440" y="325" text-anchor="middle">3. AI Analyzes Report</text>
+    </g>
+    <line x1="440" y1="350" x2="440" y2="400" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g class="process-step">
+        <rect x="330" y="400" width="220" height="120" rx="8" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+        <text x="440" y="425" text-anchor="middle" font-weight="bold">4. Display Results</text>
+        <text x="340" y="450" text-anchor="start" font-size="12">- AI Summary</text>
+        <text x="340" y="470" text-anchor="start" font-size="12">- Key Abnormalities</text>
+        <text x="340" y="490" text-anchor="start" font-size="12">- Potential Diagnoses</text>
+        <text x="340" y="510" text-anchor="start" font-size="12">- Follow-ups</text>
+    </g>
+
+    <!-- Branching Logic -->
+    <path d="M 550 460 H 600" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M 440 520 V 570" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <g class="decision-step">
+        <rect x="600" y="430" width="220" height="60" rx="30" ry="30" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+        <text x="710" y="465" text-anchor="middle">Ask Follow-up Question?</text>
+    </g>
+    <line x1="820" y1="460" x2="880" y2="460" stroke="#9ca3af" stroke-width="2" />
+    <text x="835" y="455" font-size="12">Yes</text>
+    <line x1="710" y1="490" x2="710" y2="540" stroke="#9ca3af" stroke-width="2" />
+    <text x="715" y="520" font-size="12">No</text>
+    
+    <g class="process-step">
+        <rect x="880" y="430" width="220" height="60" rx="8" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+        <text x="990" y="465" text-anchor="middle">AI Chat answers question</text>
+    </g>
+    <path d="M 990 490 V 520 H 710" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)" />
+
+    <g class="process-step">
+        <rect x="330" y="570" width="220" height="60" rx="8" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+        <text x="440" y="605" text-anchor="middle">5. Doctor Reviews & Confirms</text>
+    </g>
+    
+    <path d="M 710 540 C 710 580, 550 580, 550 600" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)" />
+    <path d="M 440 630 V 680" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <g class="process-step">
+      <rect x="330" y="680" width="220" height="60" rx="8" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+      <text x="440" y="715" text-anchor="middle">6. Generate Prescription</text>
+    </g>
+    <line x1="440" y1="740" x2="440" y2="790" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g class="end-node">
+      <rect x="330" y="790" width="220" height="60" rx="30" fill="#fecaca" stroke="#ef4444" stroke-width="2"/>
+      <text x="440" y="825" text-anchor="middle">End: Plan Ready</text>
+    </g>
+  </g>
+</svg>
